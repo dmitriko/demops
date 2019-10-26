@@ -1,0 +1,44 @@
+- name: install pip
+  apt:
+    name: python-pip
+    state: present
+
+- name: install docker module
+  pip:
+    name: docker
+
+- name: create temp dir to build Jenkins docker
+  file:
+    dest: "{{build_dir}}"
+    state: directory
+
+- name: copy files to build Jenkins container
+  copy: 
+    src: "{{role_path}}/files/" 
+    dest: "{{build_dir}}" 
+  notify:
+    - remove container
+    - build docker image
+    - start container
+
+- name: build docker image
+  docker_image:
+    name: "jenkins"
+    path: "{{build_dir}}"
+    force: yes
+    state: build
+
+- name: remove container
+  docker_container:
+    name: jenkins
+    state: absent
+
+- name: start container
+  docker_container:
+    name: "jenkins"
+    image: "jenkins"
+    state: started
+    published_ports: 127.0.0.1:8080:8080
+    restart_policy: "unless-stopped"
+
+

@@ -22,6 +22,7 @@
   - install docker
   - docker login
   - upload jenkins job
+  - create jenkins user with uid 1000
   - install jenkins as docker container making sure job is inside
   - install ansible
   - upload deployment playbook
@@ -33,4 +34,8 @@
   - setup lets encrypt
 
 
-
+* staff
+Jenkins.instance.pluginManager.plugins.each{
+  plugin -> 
+    println ("${plugin.getShortName()}: ${plugin.getVersion()}")
+}
