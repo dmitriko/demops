@@ -1,3 +1,16 @@
+- name: create Jenkins group
+  group:
+    name: jenkins
+    gid: 1000
+
+- name: create Jenkins user on host and add it docker group
+  user:
+    name: jenkins
+    uid: 1000
+    group: jenkins
+    groups: docker
+    append: yes
+
 - name: install pip
   apt:
     name: python-pip
@@ -16,28 +29,33 @@
   copy: 
     src: "{{role_path}}/files/" 
     dest: "{{build_dir}}" 
-  notify:
-    - remove container
-    - build docker image
-    - start container
+  register: dockerfile
 
 - name: build docker image
   docker_image:
     name: "jenkins"
-    path: "{{build_dir}}"
-    force: yes
-    state: build
+    build:
+      pull: no
+      path: "{{build_dir}}"
+    source: build
+    force_source: yes
+  when: dockerfile.changed
+  register: dockerbuilt
 
 - name: remove container
   docker_container:
     name: jenkins
     state: absent
+  when: dockerbuilt.changed
 
 - name: start container
   docker_container:
     name: "jenkins"
     image: "jenkins"
     state: started
+    privileged: yes
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
     published_ports: 127.0.0.1:8080:8080
     restart_policy: "unless-stopped"
 
