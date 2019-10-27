@@ -1,0 +1,27 @@
+---
+- hosts: localhost
+  connection: local
+  gather_facts: False
+  vars_files:
+    - secrets.yaml
+    - dovars.yaml
+  tasks:
+    - name: create App host
+      digital_ocean_droplet:
+        state: present
+        name: "{{apphost_name}}" 
+        size: "{{apphost_size}}"
+        region: "{{apphost_region}}"
+        image: "{{apphost_image}}"
+        oauth_token: "{{do_token}}"
+        unique_name: yes
+        ssh_keys: ["{{apphost_ssh_key}}"]
+      register: apphost
+ 
+    - name: put App host to inventory
+      add_host:
+        name: "{{apphost.droplet.ip_address}}"
+        groups: app
+      when: apphost.droplet is defined
+      changed_when: False
+
