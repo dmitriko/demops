@@ -27,7 +27,7 @@
 
 - name: copy files to build Jenkins container
   copy: 
-    src: "{{role_path}}/files/" 
+    src: "docker_image/" 
     dest: "{{build_dir}}" 
   register: dockerfile
 
