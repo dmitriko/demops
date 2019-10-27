@@ -17,11 +17,18 @@
         unique_name: yes
         ssh_keys: ["{{apphost_ssh_key}}"]
       register: apphost
- 
+    - name: debug
+      debug:
+        var: apphost.data.ip_address
     - name: put App host to inventory
       add_host:
-        name: "{{apphost.droplet.ip_address}}"
+        name: "{{apphost.data.ip_address}}"
         groups: app
-      when: apphost.droplet is defined
+        when: apphost.data is defined
       changed_when: False
+
+- hosts: app
+  remote_user: root
+  roles:
+    - app
 
