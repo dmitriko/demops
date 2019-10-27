@@ -21,5 +21,9 @@ RUN mkdir -p $KEYS_DIR/ && chmod 700 $KEYS_DIR/
 COPY id_rsa* $KEYS_DIR/
 RUN chmod 400 $KEYS_DIR/* && chown jenkins -R $KEYS_DIR
 COPY ssh_config /etc/ssh/ssh_config
+
+# Docker client
+curl https://download.docker.com/linux/static/stable/x86_64/docker-19.03.1.tgz |tar xzvf - --strip=1 -C /usr/local/bin docker/docker
+
 USER jenkins
 
