@@ -11,6 +11,30 @@
     groups: docker
     append: yes
 
+- name: create Jenkins home dir on host
+  file:
+    path: "{{jenkins_home}}"
+    state: directory
+    owner: jenkins
+    group: jenkins
+    mode: 0755
+
+- name: create docker config dir in jenkins home
+  file:
+    path: "{{jenkins_home}}/.docker/"
+    state: directory
+    owner: jenkins
+    group: jenkins
+    mode: 0755
+
+- name: set docker login
+  copy:
+    src: "config.json"
+    dest: "{{jenkins_home}}/.docker/config.json"
+    owner: jenkins
+    group: jenkins
+    mode: 0400
+ 
 - name: install pip
   apt:
     name: python-pip
@@ -56,6 +80,7 @@
     privileged: yes
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+      - "{{jenkins_home}}:/var/jenkins_home"
     published_ports: 127.0.0.1:8080:8080
     restart_policy: "unless-stopped"
 
