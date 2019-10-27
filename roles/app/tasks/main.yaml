@@ -3,3 +3,14 @@
   authorized_key:
     user: root
     key: "{{ lookup('file', '{{playbook_dir}}/roles/jenkins/files/id_rsa.pub') }}"
+
+- name: create docker config dir
+  file:
+    path: "/root/.docker/"
+    state: directory
+    mode: 0755
+
+- name: set docker login
+  copy:
+    src: "{{playbook_dir}}/roles/jenkins/files/config.json"
+    dest: "/root/.docker/config.json"
