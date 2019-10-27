@@ -25,5 +25,8 @@ COPY ssh_config /etc/ssh/ssh_config
 # Docker client
 RUN curl https://download.docker.com/linux/static/stable/x86_64/docker-19.03.1.tgz |tar xzvf - --strip=1 -C /usr/local/bin docker/docker && groupadd docker -g 999 && usermod -a -G docker jenkins
 
+# Ansible module
+RUN curl https://bootstrap.pypa.io/get-pip.py |python && pip install ansible
+
 USER jenkins
 
