@@ -19,6 +19,20 @@
     group: jenkins
     mode: 0755
 
+- name: create deploy job dir
+  file:
+    path: "{{jenkins_home}}/jobs/deploy"
+    state: directory
+    owner: jenkins
+    group: jenkins
+
+- name: put Deploy job config
+  copy:
+    src: "deploy_job_config.xml"
+    dest: "{{jenkins_home}}/jobs/deploy/config.xml"
+    owner: jenkins
+    group: jenkins
+
 - name: create docker config dir in jenkins home
   file:
     path: "{{jenkins_home}}/.docker/"
@@ -34,7 +48,7 @@
     owner: jenkins
     group: jenkins
     mode: 0400
- 
+
 - name: install pip
   apt:
     name: python-pip
