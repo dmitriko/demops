@@ -7,7 +7,7 @@
     <org.jenkinsci.plugins.workflow.job.properties.PipelineTriggersJobProperty>
       <triggers>
         <hudson.triggers.SCMTrigger>
-          <spec>H/3 * * * * </spec>
+          <spec>* * * * * </spec>
           <ignorePostCommitHooks>false</ignorePostCommitHooks>
         </hudson.triggers.SCMTrigger>
       </triggers>
@@ -38,7 +38,7 @@
        sh &quot;docker push ${env.image}&quot;
    }
    stage(&quot;Deploy on app host&quot;) {
-      sh &quot;ansible-playbook /etc/ansible/deploy.yaml --extra-vars &apos;image=${env.image}&apos;&quot;
+      sh &quot;export ANSIBLE_HOST_KEY_CHECKING=False; ansible-playbook /etc/ansible/deploy.yaml --extra-vars &apos;image=${env.image}&apos;&quot;
    }
 }</script>
     <sandbox>true</sandbox>

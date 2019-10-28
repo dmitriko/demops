@@ -17,15 +17,24 @@
         unique_name: yes
         ssh_keys: ["{{apphost_ssh_key}}"]
       register: apphost
+  
     - name: put App host to inventory
       add_host:
         name: "{{apphost.data.ip_address}}"
         groups: app
         when: apphost.data is defined
       changed_when: False
+   
     - name: store app host ip
       set_fact:
         apphost_ip: "{{apphost.data.ip_address}}"
+  
+    - name: make DNS record for app host
+      digital_ocean_domain:
+        name: "{{apphost_domain}}"
+        ip: "{{apphost.data.ip_address}}"
+        oauth_token: "{{do_token}}"
+   
     - name: create Ops host
       digital_ocean_droplet:
         state: present

@@ -1,7 +1,3 @@
-- name: print app host ip
-  debug:
-    msg: "{{hostvars['localhost']['apphost_ip']}}"
-
 - name: create Jenkins group
   group:
     name: jenkins
@@ -36,6 +32,7 @@
     dest: "/etc/ansible/"
     group: jenkins
     owner: jenkins
+  register: playbook
 
 - name: create deploy job dir
   file:
@@ -50,7 +47,7 @@
     dest: "{{jenkins_home}}/jobs/deploy/config.xml"
     owner: jenkins
     group: jenkins
-  register: playbook
+  register: jobconfig 
 
 - name: create docker config dir in jenkins home
   file:
@@ -120,7 +117,7 @@
   docker_container:
     name: jenkins
     state: absent
-  when: dockerbuilt.changed or playbook.changed
+  when: dockerbuilt.changed or playbook.changed or jobconfig.changed
 
 - name: start container
   docker_container:
