@@ -23,15 +23,17 @@ it will be an application host
 	- let docker pull to work
 	- let Ansible to manage docker
 	- setup nginx with firewall access    
-_see_ [playbook](https://github.com/dmitriko/trgops/blob/master/roles/app/tasks/main.yaml)
+
+[_playbook_](https://github.com/dmitriko/trgops/blob/master/roles/app/tasks/main.yaml)
 - on Jenkins host it does: 
 	- create jenkins user
 	- setup Ansible 
 	- put deployment jenkins job, see it [there](https://github.com/dmitriko/trgops/blob/master/roles/jenkins/files/deploy_job_config.xml)
 	- fix docker push/pull
 	- build and run Jenkins container from this [Dockerfile](https://github.com/dmitriko/trgops/blob/master/roles/jenkins/files/docker_image/Dockerfile)
-<br/>
-_see_ [playbook](https://github.com/dmitriko/trgops/blob/master/roles/jenkins/tasks/main.yaml)
+
+[_playbook_](https://github.com/dmitriko/trgops/blob/master/roles/jenkins/tasks/main.yaml)
+
 
 ##### Kubernetes
 Whatever we like or not K8S is the standard environment to run applications these days. I like it because I had a lot of problems with different approaches like Docker Sware, docker-compose etc. Usually, K8S just works for the statless application. I believe databases should be running as dedicated services by cloud providers.
