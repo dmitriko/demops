@@ -16,10 +16,6 @@ VOLUME /var/jenkins_home
 
 # ssh access to git
 USER root
-ENV KEYS_DIR=/var/githubkeys
-RUN mkdir -p $KEYS_DIR/ && chmod 700 $KEYS_DIR/
-COPY id_rsa* $KEYS_DIR/
-RUN chmod 400 $KEYS_DIR/* && chown jenkins -R $KEYS_DIR
 COPY ssh_config /etc/ssh/ssh_config
 
 # Docker client

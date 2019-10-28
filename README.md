@@ -37,5 +37,17 @@
 * staff
 Jenkins.instance.pluginManager.plugins.each{
   plugin -> 
-    println ("${plugin.getShortName()}: ${plugin.getVersion()}")
+    println ("${plugin.getShortName()}:${plugin.getVersion()}")
+}
+
+node {
+   stage('Pulling from GitHub') { 
+     git 'git@github.com:dmitriko/demoapp.git'
+     
+   }
+   stage('Build Docker image') {
+     sh "pwd"
+     
+   }
+   
 }

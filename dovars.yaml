@@ -6,3 +6,9 @@ apphost_image: "docker-18-04"
 apphost_region: "lon1"
 apphost_name: "demoapp"
 apphost_ssh_key: 78869
+
+opshost_size: "s-1vcpu-1gb"
+opshost_image: "docker-18-04"
+opshost_region: "lon1"
+opshost_name: "demops"
+opshost_ssh_key: 78869

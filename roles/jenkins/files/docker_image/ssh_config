@@ -5,7 +5,6 @@ Host *
 
 Host github.com
     User git
-    IdentityFile /var/githubkeys/id_rsa
     UserKnownHostsFile /dev/null
     StrictHostKeyChecking no
 

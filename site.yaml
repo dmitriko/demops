@@ -17,18 +17,40 @@
         unique_name: yes
         ssh_keys: ["{{apphost_ssh_key}}"]
       register: apphost
-    - name: debug
-      debug:
-        var: apphost.data.ip_address
     - name: put App host to inventory
       add_host:
         name: "{{apphost.data.ip_address}}"
         groups: app
         when: apphost.data is defined
       changed_when: False
-
+    - name: store app host ip
+      set_fact:
+        apphost_ip: "{{apphost.data.ip_address}}"
+    - name: create Ops host
+      digital_ocean_droplet:
+        state: present
+        name: "{{opshost_name}}"
+        size: "{{opshost_size}}"
+        region: "{{opshost_region}}"
+        image: "{{opshost_image}}"
+        oauth_token: "{{do_token}}"
+        unique_name: yes
+        ssh_keys: ["{{opshost_ssh_key}}"]
+      register: opshost
+   
+    - name: put Ops host to inventory
+      add_host:
+        name: "{{opshost.data.ip_address}}"
+        groups: ops
+        when: opshost.data is defined
+      changed_when: False
+      
 - hosts: app
   remote_user: root
   roles:
     - app
 
+- hosts: ops
+  remote_user: root
+  roles:
+    - jenkins

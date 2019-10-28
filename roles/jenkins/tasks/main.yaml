@@ -1,3 +1,7 @@
+- name: print app host ip
+  debug:
+    msg: "{{hostvars['localhost']['apphost_ip']}}"
+
 - name: create Jenkins group
   group:
     name: jenkins
@@ -10,14 +14,21 @@
     group: jenkins
     groups: docker
     append: yes
+    home: "{{jenkins_home}}"
 
-- name: create Jenkins home dir on host
+- name: create Ansible etc dir
   file:
-    path: "{{jenkins_home}}"
+    path: "/etc/ansible"
     state: directory
     owner: jenkins
     group: jenkins
-    mode: 0755
+
+- name: create Ansible inventory
+  template:
+    src: inventory.j2
+    dest: /etc/ansible/hosts
+    group: jenkins
+    owner: jenkins
 
 - name: create deploy job dir
   file:
@@ -49,9 +60,26 @@
     group: jenkins
     mode: 0400
 
+- name: fix ~/.ssh dir
+  file:
+    dest: "{{jenkins_home}}/.ssh"
+    state: directory
+    owner: jenkins
+    group: jenkins
+    mode: 0700
+
+- name: upload deployment keys
+  copy:
+    src: "id_rsa"
+    dest: "{{jenkins_home}}/.ssh/"
+    owner: jenkins
+    group: jenkins
+    mode: 0400
+
 - name: install pip
   apt:
-    name: python-pip
+    name: python3-pip
+    update_cache: yes
     state: present
 
 - name: install docker module
@@ -95,6 +123,7 @@
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - "{{jenkins_home}}:/var/jenkins_home"
+      - "/etc/ansible:/etc/ansible"
     published_ports: 127.0.0.1:8080:8080
     restart_policy: "unless-stopped"
 
