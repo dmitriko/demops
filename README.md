@@ -24,7 +24,6 @@ it will be an application host
 	- let Ansible to manage docker
 	- setup nginx with firewall access    
 _see_ [playbook](https://github.com/dmitriko/trgops/blob/master/roles/app/tasks/main.yaml)
-<br/>
 - on Jenkins host it does: 
 	- create jenkins user
 	- setup Ansible 
