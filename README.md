@@ -33,7 +33,7 @@ it will be an application host
 	- build and run Jenkins container from this [Dockerfile](https://github.com/dmitriko/trgops/blob/master/roles/jenkins/files/docker_image/Dockerfile)
 
 [_playbook_](https://github.com/dmitriko/trgops/blob/master/roles/jenkins/tasks/main.yaml)
-
+- the app deployment procedure described [here](https://github.com/dmitriko/demops/blob/master/roles/jenkins/files/deploy.yaml)
 
 ##### Kubernetes
 Whatever we like or not K8S is the standard environment to run applications these days. I like it because I had a lot of problems with different approaches like Docker Sware, docker-compose etc. Usually, K8S just works for the statless application. I believe databases should be running as dedicated services by cloud providers.
