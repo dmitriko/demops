@@ -1,4 +1,8 @@
-# Dimitri's assignment for TRG 
+## Simple Continues Integration Pipeline with Jenkins and Ansible
+#### There is a saying - best devops use the worse laptopx.
+Well, probably, I am not the best but I use pretty slow notebook and run almost everything in the cloud.
+##### The goal is to setup Jenkins to poll Github, test the latest commit and deploy the app if everyhing is ok
+The application is a simple Python Flask hello world. See it at: [demo app](https://github.com/dmitriko/demoapp)
 - create 2 repos, one for ops another one for app
 - generate ssh keys to use as deployment keys for repos
 - create a password file to use with Ansible Vault
