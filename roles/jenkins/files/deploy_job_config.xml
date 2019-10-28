@@ -1,5 +1,6 @@
 <?xml version='1.1' encoding='UTF-8'?>
 <flow-definition plugin="workflow-job@2.35">
+  <actions/>
   <description></description>
   <keepDependencies>false</keepDependencies>
   <properties>
@@ -19,10 +20,26 @@
 
    }
    stage(&apos;Build Docker image&apos;) {
-     sh &quot;pwd&quot;
-
+    def tag = sh(script: &apos;git describe&apos;, returnStdout: true).trim()
+    def image = &quot;dmitriko/demoapp:&quot; + tag
+    def build_cmd = &quot;docker build -t &quot; + image + &quot; . &quot; 
+    sh build_cmd
+    env.image = image
    }
-
+   stage(&quot;Test Docker image&quot;){
+       def test_cmd = &quot;docker run -i --rm  -v ${WORKSPACE}:/tmp ${env.image} py.test  --junit-xml=/tmp/test-results.xml /app/demoapp&quot;
+       def res = sh (script: test_cmd, returnStatus: true)
+       junit &apos;test-results.xml&apos;
+       if (res == 1) {
+           sh &quot;exit 1&quot;
+       }
+   }
+   stage(&quot;Push Docker image&quot;){
+       sh &quot;docker push ${env.image}&quot;
+   }
+   stage(&quot;Deploy on app host&quot;) {
+      sh &quot;ansible-playbook /etc/ansible/deploy.yaml --extra-vars &apos;image=${env.image}&apos;&quot;
+   }
 }</script>
     <sandbox>true</sandbox>
   </definition>

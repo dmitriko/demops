@@ -30,6 +30,13 @@
     group: jenkins
     owner: jenkins
 
+- name: put deploy playbook
+  copy:
+    src: "deploy.yaml"
+    dest: "/etc/ansible/"
+    group: jenkins
+    owner: jenkins
+
 - name: create deploy job dir
   file:
     path: "{{jenkins_home}}/jobs/deploy"
@@ -43,6 +50,7 @@
     dest: "{{jenkins_home}}/jobs/deploy/config.xml"
     owner: jenkins
     group: jenkins
+  register: playbook
 
 - name: create docker config dir in jenkins home
   file:
@@ -112,7 +120,7 @@
   docker_container:
     name: jenkins
     state: absent
-  when: dockerbuilt.changed
+  when: dockerbuilt.changed or playbook.changed
 
 - name: start container
   docker_container:

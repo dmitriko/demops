@@ -1,0 +1,21 @@
+---
+- hosts: app
+  tasks:
+
+    - name: pull image
+      docker_image:
+        source: pull
+        name: "{{image}}"
+
+    - name: stop previos container
+      docker_container:
+        name: "app"
+        state: absent
+
+    - name: start new container
+      docker_container:
+        name: "app"
+        state: started
+        image: "{{image}}"
+        published_ports: 127.0.0.1:8080:8080
+        restart_policy: "unless-stopped"
