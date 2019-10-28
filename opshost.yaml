@@ -1,6 +1,0 @@
----
-- hosts: ops
-  gather_facts: no
-  roles:
-    - jenkins
-  
