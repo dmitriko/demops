@@ -24,3 +24,29 @@
 - name: install docker module
   pip:
     name: docker
+
+- name: install nginx
+  apt: name=nginx state=latest
+
+- name: put nginx config
+  copy:
+    src: "nginx.conf"
+    dest: "/etc/nginx/nginx.conf"
+
+- name: restart nginx
+  service:
+    name: nginx
+    state: restarted
+    enabled: yes
+
+- name: Allow all access to tcp port 80
+  ufw:
+    rule: allow
+    port: "80"
+    proto: tcp
+
+- name: Allow all access to tcp port 443
+  ufw:
+    rule: allow
+    port: "443"
+    proto: tcp
