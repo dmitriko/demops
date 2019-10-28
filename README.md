@@ -37,3 +37,6 @@ it will be an application host
 
 ##### Kubernetes
 Whatever we like or not K8S is the standard environment to run applications these days. I like it because I had a lot of problems with different approaches like Docker Sware, docker-compose etc. Usually, K8S just works for the statless application. I believe databases should be running as dedicated services by cloud providers.
+
+##### SSL
+Jenkins is running on 127.0.0.1 but demo application uses SSL and available at: [https://demapp.politerobots.com/](https://demapp.politerobots.com/)
