@@ -28,6 +28,20 @@
 - name: install nginx
   apt: name=nginx state=latest
 
+- name: create dir for ssl keys
+  file:
+    state: directory
+    path: "/etc/ssl"
+
+- name: copy ssl keys
+  copy:
+    src: "{{item}}"
+    dest: "/etc/ssl/"
+  with_items:
+    - "fullchain.pem"
+    - "privkey.pem"
+    - "ffdhe4096.pem"
+
 - name: put nginx config
   copy:
     src: "nginx.conf"
