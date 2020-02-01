@@ -2,8 +2,6 @@
 ### The key point of this setup - it is One Click installation,
 once you have ansible setup on your laptop it is a matter of one command to install everything.
 After it complets you just commit your changes and after the tests they appear at the application endpoint.
-#### There is a saying - best devops use the worse laptop.
-Well, probably, I am not the best but I use pretty slow notebook and run almost everything in the cloud.
 ##### The goal is to setup Jenkins to poll Github, test the latest commit and deploy the app if everyhing is ok
 The application is a simple Python Flask hello world. See the souce code at: [demo app](https://github.com/dmitriko/demoapp)
 ##### The most challenge part was to setup Jenkins in container and make it fully automatically.
